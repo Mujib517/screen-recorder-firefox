@@ -6,49 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Screen</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Show my screen</h1>
-
+    <div>
+        <button id="btnStart">
+            <h1>
+                <i class="fa fa-play"></i>
+            </h1>
+        </button>
+        <button id="btnStop" style="display:none">
+            <h1>
+                <i class="fa fa-stop"></i>
+            </h1>
+        </button>
+    </div>
     <video autoplay id="screen" width="50%"></video>
-    <button id="btnStart">Start Recording</button>
-    <button id="btnStop" style="display:none">Stop the screen</button>
 
-    <script>
-        (() => {
-            const video = document.getElementById('screen');
-            const btnStart = document.getElementById('btnStart');
-            const btnStop = document.getElementById('btnStop');
-
-            let stream;
-
-            btnStart.addEventListener('click', event => {
-                navigator.mediaDevices
-                    .getUserMedia({
-                        video: {
-                            mediaSource: 'screen'
-                        }
-                    }).then(returnedStream => {
-                        stream = returnedStream;
-                        video.srcObject = returnedStream;
-                        btnStart.style.display = 'none';
-                        btnStop.style.display = 'inline';
-                    })
-                    .catch(err => {
-                        console.error('Could not get stream: ', err);
-                    });
-            });
-
-            btnStop.addEventListener('click', event => {
-                stream.getTracks().forEach(track => track.stop());
-                video.src = '';
-                btnStop.style.display = 'none';
-                btnStart.style.display = 'inline';
-            });
-        })();
-
-    </script>
+    <script src="scripts/record.js"></script>
 </body>
 
 </html>
