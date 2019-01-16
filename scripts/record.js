@@ -7,11 +7,11 @@
     btnStart.addEventListener('click', start);
     btnStop.addEventListener('click', stop);
 
-    let stream,recorder;
+    let stream, recorder, mic;
 
     function start() {
-        mediaSource.addEventListener('sourceopen', function(e) {
-            console.log('sourceopen')
+        mic = document.getElementById('mic').checked;
+        mediaSource.addEventListener('sourceopen', function (e) {
             sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
         });
 
@@ -19,7 +19,8 @@
             .getUserMedia({
                 video: {
                     mediaSource: 'screen'
-                }
+                },
+                audio: mic
             }).then(returnedStream => {
                 stream = returnedStream;
                 video.srcObject = returnedStream;
@@ -34,7 +35,7 @@
             });
     }
 
-    function stop(){
+    function stop() {
         saveRecording();
         stream.getTracks().forEach(track => track.stop());
         video.src = '';
@@ -42,18 +43,22 @@
         btnStart.style.display = 'inline';
     }
 
-    function saveRecording(){
+    function saveRecording() {
         recorder.ondataavailable = e => {
             ul.style.display = 'block';
             var a = document.createElement('a'),
+                i=document.createElement('i'),
                 li = document.createElement('li');
-            a.download = ['video_', new Date(), '.webm'].join('');
+            li.className = 'list-group-item';
+            i.className= 'fa fa-play';
+            a.download = ['video_', Date.now(), '.webm'].join('');
             a.href = URL.createObjectURL(e.data);
             a.textContent = a.download;
+            li.appendChild(i);
             li.appendChild(a);
             ul.appendChild(li);
         };
         recorder.stop();
     }
-    
+
 })();
