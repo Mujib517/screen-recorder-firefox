@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Screen</title>
+</head>
+
+<body>
+    <h1>Show my screen</h1>
+
+    <video autoplay id="screen-view" width="50%"></video>
+    <button id="btnStart">Start Recording</button>
+    <button id="btnStop" style="display:none">Stop the screen</button>
+
+    <script>
+        (() => {
+            const video = document.getElementById('screen-view');
+            const btnStart = document.getElementById('btnStart');
+            const btnStop = document.getElementById('btnStop');
+
+            let stream;
+
+            btnStart.addEventListener('click', event => {
+                navigator.mediaDevices
+                    .getUserMedia({
+                        video: {
+                            mediaSource: 'screen'
+                        }
+                    }).then(returnedStream => {
+                        stream = returnedStream;
+                        video.srcObject = returnedStream;
+                        btnStart.style.display = 'none';
+                        btnStop.style.display = 'inline';
+                    })
+                    .catch(err => {
+                        console.error('Could not get stream: ', err);
+                    });
+            });
+
+            btnStop.addEventListener('click', event => {
+                stream.getTracks().forEach(track => track.stop());
+                video.src = '';
+                btnStop.style.display = 'none';
+                btnStart.style.display = 'inline';
+            });
+        })();
+
+    </script>
+</body>
+
+</html>
