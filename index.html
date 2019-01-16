@@ -11,13 +11,13 @@
 <body>
     <h1>Show my screen</h1>
 
-    <video autoplay id="screen-view" width="50%"></video>
+    <video autoplay id="screen" width="50%"></video>
     <button id="btnStart">Start Recording</button>
     <button id="btnStop" style="display:none">Stop the screen</button>
 
     <script>
         (() => {
-            const video = document.getElementById('screen-view');
+            const video = document.getElementById('screen');
             const btnStart = document.getElementById('btnStart');
             const btnStop = document.getElementById('btnStop');
 
